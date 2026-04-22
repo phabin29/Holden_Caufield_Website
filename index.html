@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Through Holden's Eyes — A Catcher in the Rye Photo Essay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0b09;
+      --paper:   #f2ead8;
+      --cream:   #e8dfc8;
+      --gold:    #b8924a;
+      --rust:    #8b3a2a;
+      --mist:    #6b6560;
+      --dim:     #1a1714;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, background 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,146,74,0.5);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, opacity 0.2s ease;
+    }
+
+    /* ─── GRAIN OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 8000;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.45;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 60%, rgba(139,58,42,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(184,146,74,0.08) 0%, transparent 50%),
+        var(--ink);
+      z-index: 0;
+    }
+
+    .hero-rule {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      margin: 0 auto 2.5rem;
+      animation: fadeDown 1.4s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 1s 0.3s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 9vw, 8rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      color: var(--paper);
+      position: relative; z-index: 1;
+      animation: fadeUp 1s 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--mist);
+      max-width: 560px;
+      margin: 2rem auto 0;
+      position: relative; z-index: 1;
+      animation: fadeUp 1s 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      z-index: 1;
+      animation: fadeUp 1s 1.2s ease forwards;
+      opacity: 0;
+      color: var(--mist);
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .hero-scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s 1.5s ease-in-out infinite;
+    }
+
+    /* ─── INTRO QUOTE ─── */
+    .intro-quote {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+      text-align: center;
+    }
+
+    .intro-quote blockquote {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.65;
+      color: var(--cream);
+      position: relative;
+    }
+
+    .intro-quote blockquote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      color: var(--gold);
+      opacity: 0.25;
+      position: absolute;
+      top: -2.5rem; left: -1rem;
+      line-height: 1;
+    }
+
+    .intro-quote cite {
+      display: block;
+      margin-top: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: normal;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 7000;
+      padding: 1.4rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(to bottom, rgba(13,11,9,0.95), transparent);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mist);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── SECTION DIVIDER ─── */
+    .divider {
+      display: flex; align-items: center; gap: 1.5rem;
+      max-width: 900px; margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: rgba(184,146,74,0.3); }
+    .divider-diamond {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ─── PHOTO SECTION ─── */
+    .gallery {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .photo-entry {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      padding: 6rem 0;
+      border-bottom: 1px solid rgba(184,146,74,0.12);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .photo-entry.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .photo-entry.reverse { direction: rtl; }
+    .photo-entry.reverse > * { direction: ltr; }
+
+    .photo-frame {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, transparent 60%, rgba(13,11,9,0.5));
+      pointer-events: none;
+    }
+
+    .photo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 1px solid rgba(184,146,74,0.3);
+      z-index: 3;
+      pointer-events: none;
+      transition: border-color 0.4s;
+    }
+
+    .photo-frame:hover::after {
+      border-color: rgba(184,146,74,0.8);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      filter: sepia(25%) contrast(1.05) brightness(0.88);
+      transition: transform 0.8s ease, filter 0.5s ease;
+    }
+
+    .photo-frame:hover img {
+      transform: scale(1.04);
+      filter: sepia(15%) contrast(1.08) brightness(0.95);
+    }
+
+    .photo-number {
+      position: absolute; bottom: 1rem; right: 1.2rem;
+      z-index: 4;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(232,223,200,0.6);
+    }
+
+    .photo-content {}
+
+    .photo-theme {
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .photo-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--paper);
+      margin-bottom: 1.4rem;
+    }
+
+    .photo-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .photo-description {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #a09a90;
+      margin-bottom: 1.5rem;
+    }
+
+    .photo-quote {
+      border-left: 2px solid var(--gold);
+      padding-left: 1.2rem;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--cream);
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+
+    .photo-quote cite {
+      display: block;
+      font-style: normal;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.6rem;
+      opacity: 0.7;
+    }
+
+    /* ─── FULL-WIDTH INTERLUDE ─── */
+    .interlude {
+      position: relative;
+      min-height: 50vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+
+    .interlude-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(30%) contrast(1.1) brightness(0.45);
+    }
+
+    .interlude-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(13,11,9,0.4), rgba(13,11,9,0.7));
+    }
+
+    .interlude-text {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 700px;
+    }
+
+    .interlude-text p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      line-height: 1.4;
+      color: var(--paper);
+    }
+
+    .interlude-text span {
+      color: var(--gold);
+    }
+
+    /* ─── CLOSING ─── */
+    .closing {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 8rem 2rem;
+      text-align: center;
+    }
+
+    .closing h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--paper);
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+    }
+
+    .closing p {
+      font-size: 1.05rem;
+      color: var(--mist);
+      line-height: 1.85;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(184,146,74,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mist);
+      opacity: 0.6;
+    }
+
+    footer strong {
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50%       { opacity: 1;   transform: scaleY(1.15); }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 800px) {
+      .photo-entry, .photo-entry.reverse {
+        grid-template-columns: 1fr;
+        direction: ltr;
+        gap: 2rem;
+        padding: 4rem 0;
+      }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="nav-logo">Through Holden's Eyes</a>
+    <ul class="nav-links">
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#closing">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-rule"></div>
+    <p class="hero-eyebrow">A Visual Essay · J.D. Salinger · 1951</p>
+    <h1 class="hero-title">
+      Through<br><em>Holden's Eyes</em>
+    </h1>
+    <p class="hero-subtitle">Ten photographs mapping the grief, longing, and restless wonder of The Catcher in the Rye.</p>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- INTRO QUOTE -->
+  <div class="intro-quote reveal">
+    <blockquote>
+      "What I was really hanging around for, I was trying to feel some kind of good-by. I don't care if it's a sad good-by or a bad good-by, but when I leave a place I like to know I'm leaving it."
+      <cite>— J.D. Salinger, The Catcher in the Rye</cite>
+    </blockquote>
+  </div>
+
+  <div class="divider reveal">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="gallery">
+
+    <!-- 1 -->
+    <div class="photo-entry">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/nyc-night/900/675" alt="New York City night skyline" loading="lazy" />
+        <span class="photo-number">01 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Setting · Identity</p>
+        <h2 class="photo-title">New York City,<br><em>Going Nowhere</em></h2>
+        <p class="photo-description">
+          The city is not just a backdrop in Salinger's novel — it is Holden Caulfield's prison and playground. After being expelled from Pencey Prep, he wanders New York for three days, dragging his suitcase through cabs, hotel lobbies, and dark bars. The lights are always on, yet he feels utterly invisible.
+        </p>
+        <div class="photo-quote">
+          "I was surrounded by millions of people, and yet I felt completely alone — the neons blinking their phony brightness into a sky that didn't care."
+          <cite>— Thematic parallel, Ch. 7–9</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="photo-entry reverse">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/ducks-pond/900/675" alt="Ducks on a winter pond" loading="lazy" />
+        <span class="photo-number">02 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Curiosity · Impermanence</p>
+        <h2 class="photo-title">The Lagoon,<br><em>Where Do They Go?</em></h2>
+        <p class="photo-description">
+          One of the novel's most famous motifs: Holden obsessively asks cab drivers where the ducks in Central Park go when the lagoon freezes over. To him, the question is never really about ducks. It is about where anyone goes when their world turns cold and inhospitable — including himself.
+        </p>
+        <div class="photo-quote">
+          "You know those ducks in that lagoon right near Central Park South? … Do you happen to know where they go, the ducks, when it gets all frozen over?"
+          <cite>— Ch. 9, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="photo-entry">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/rainy-street/900/675" alt="Rainy Paris street at night — evokes lonely urban wandering" loading="lazy" />
+        <span class="photo-number">03 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Alienation · The Phony World</p>
+        <h2 class="photo-title">Wet Asphalt,<br><em>The Phonies</em></h2>
+        <p class="photo-description">
+          "Phony" — the word Holden uses 35 times in the novel — captures his revulsion at a world of performance and pretense. Every polished surface hides decay to him. This glistening, rain-soaked street reflects back the hollow glitter of adult society: beautiful from a distance, cold and slippery underfoot.
+        </p>
+        <div class="photo-quote">
+          "One of the biggest reasons I left Elkton Hills was because I was surrounded by phonies. That's all. They were coming in the goddam window."
+          <cite>— Ch. 2, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="photo-entry reverse">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/carousel-park/900/675" alt="Vintage carousel in motion" loading="lazy" />
+        <span class="photo-number">04 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Innocence · The Unreachable</p>
+        <h2 class="photo-title">The Carousel,<br><em>Reaching for the Ring</em></h2>
+        <p class="photo-description">
+          The novel's emotional climax arrives at the carousel in Central Park, where Holden watches his little sister Phoebe ride in the rain. Children reach for the brass ring — they might fall, but that is the whole point. It is the purest image of childhood freedom in the book, and the moment Holden finally weeps.
+        </p>
+        <div class="photo-quote">
+          "The thing with kids is, if they want to grab for the gold ring, you have to let them do it, and not say anything. If they fall off, they fall off."
+          <cite>— Ch. 25, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- INTERLUDE -->
+  <div class="interlude reveal">
+    <img class="interlude-img" src="https://picsum.photos/seed/solitary/1400/800" alt="Solitary figure" />
+    <div class="interlude-overlay"></div>
+    <div class="interlude-text">
+      <p>"I felt so lonesome, all of a sudden. <span>I almost wished I was dead.</span>"</p>
+    </div>
+  </div>
+
+  <section class="gallery">
+
+    <!-- 5 -->
+    <div class="photo-entry">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/school-hall/900/675" alt="Empty school hallway" loading="lazy" />
+        <span class="photo-number">05 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Departure · Failure</p>
+        <h2 class="photo-title">The Empty Hall,<br><em>Expelled Again</em></h2>
+        <p class="photo-description">
+          Pencey Prep is the fourth school Holden has been expelled from. The institutional corridor — with its fluorescent certainty and linoleum permanence — represents the system he cannot conform to. Not out of stupidity, but out of a refusal to perform for an audience he finds worthless.
+        </p>
+        <div class="photo-quote">
+          "I was surrounded by phonies and morons — all preparing for their gorgeous and successful futures, none of them even slightly real."
+          <cite>— Thematic parallel, Ch. 1–2</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="photo-entry reverse">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/coffee-alone/900/675" alt="Cup of coffee alone at a table" loading="lazy" />
+        <span class="photo-number">06 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Loneliness · Connection</p>
+        <h2 class="photo-title">A Table for One,<br><em>Wishing for Company</em></h2>
+        <p class="photo-description">
+          Holden desperately wants connection but consistently sabotages it. He calls people, arranges meetings, and then resents them when they show up. The empty coffee cup is a perfect symbol — warmth he sought, now cold, at a table just wide enough to remind him how alone he chose to be.
+        </p>
+        <div class="photo-quote">
+          "I felt like giving someone a buzz. I left the booth, then I went back in. I nearly made a call to Jane Gallagher. I even started dialing. Then I hung up."
+          <cite>— Ch. 9, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="photo-entry">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/museum-glass/900/675" alt="Museum display of ancient figures under glass" loading="lazy" />
+        <span class="photo-number">07 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Memory · Permanence</p>
+        <h2 class="photo-title">The Museum of<br><em>Natural History</em></h2>
+        <p class="photo-description">
+          Holden loves the Museum of Natural History precisely because nothing in it ever changes. The Eskimo always fishes. The deer always drinks. He, meanwhile, is different every time he visits. The museum is his fantasy: a world frozen in amber, immune to the terrifying change that is growing up.
+        </p>
+        <div class="photo-quote">
+          "The best thing in that museum was that everything always stayed right where it was. Nobody'd move. You could go there a hundred times … and that Eskimo would still be just finished catching those two fish."
+          <cite>— Ch. 16, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="photo-entry reverse">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/red-cap/900/675" alt="Red vintage cap on worn surface" loading="lazy" />
+        <span class="photo-number">08 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Identity · Rebellion</p>
+        <h2 class="photo-title">The Red Hunting Hat,<br><em>A Shield Against the World</em></h2>
+        <p class="photo-description">
+          Holden's red hunting hat — worn backwards, brim turned up — is the novel's most potent symbol. He bought it in New York after losing his fencing team's equipment. He wears it when he's alone, when he writes, when he needs protection. It is his armour, his individuality, his refusal to be ordinary. At the end, he gives it to Phoebe.
+        </p>
+        <div class="photo-quote">
+          "I put my red hunting hat on, and turned the peak around to the back, the way I liked it, and then I yelled at the top of my goddam voice, 'Sleep tight, ya morons!'"
+          <cite>— Ch. 7, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="photo-entry">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/wall-marks/900/675" alt="Child's handwriting on a wall" loading="lazy" />
+        <span class="photo-number">09 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Childhood · Protection</p>
+        <h2 class="photo-title">Scratch Marks on<br><em>the Wall</em></h2>
+        <p class="photo-description">
+          In the school corridor and again in the museum, Holden sees "F*** you" scratched into the wall. He is furious — not at the vulgarity, but at the damage it might do to children. This is who Holden really is: not a rebel, but a protector. The catcher in the rye, trying to erase the world's cruelty before kids fall off the cliff.
+        </p>
+        <div class="photo-quote">
+          "If you had a million years to do it in, you couldn't rub out even half the 'F*** you' signs in the world. It's impossible."
+          <cite>— Ch. 25, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="photo-entry reverse">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/rye-field/900/675" alt="Golden wheat field at sunset" loading="lazy" />
+        <span class="photo-number">10 / 10</span>
+      </div>
+      <div class="photo-content">
+        <p class="photo-theme">Dream · Salvation</p>
+        <h2 class="photo-title">The Field of Rye,<br><em>The Catcher's Dream</em></h2>
+        <p class="photo-description">
+          Born from a misheard Robert Burns lyric — "comin' through the rye" — Holden imagines thousands of children playing in a vast field near a cliff. He is the one figure standing at the edge, catching them before they fall. It is the only future he can picture for himself: not ambition or career, but pure, selfless protection of innocence.
+        </p>
+        <div class="photo-quote">
+          "I keep picturing all these little kids playing some game in this big field of rye… I have to catch everybody if they start to go over the cliff — that's all I'd do all day."
+          <cite>— Ch. 22, Salinger</cite>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- CLOSING -->
+  <div class="divider reveal">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+
+  <section class="closing reveal" id="closing">
+    <h2>A Boy at the<br>Edge of the Cliff</h2>
+    <p>
+      Holden Caulfield is not simply a troubled teenager. He is a portrait of grief — for his dead brother Allie, for a childhood slipping away, for a world that stopped making sense the moment it demanded he perform adulthood. These ten photographs do not illustrate a plot. They illuminate a feeling: the ache of someone who loves the world too much to survive it unchanged.
+    </p>
+  </section>
+
+  <footer>
+    <div class="divider" style="margin-bottom: 2rem;">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+    <p>
+      <strong>Through Holden's Eyes</strong> &nbsp;·&nbsp; A Photography Essay &nbsp;·&nbsp; Based on <em>The Catcher in the Rye</em> by J.D. Salinger &nbsp;·&nbsp; © 1951
+    </p>
+    <p style="margin-top: 0.5rem; font-size: 0.65rem;">Photography sourced from Unsplash. All literary quotations are the property of their respective estate.</p>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top  = e.clientY + 'px';
+      setTimeout(() => {
+        ring.style.left = e.clientX + 'px';
+        ring.style.top  = e.clientY + 'px';
+      }, 60);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // For non-photo-entry reveals
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll('.photo-entry').forEach(el => observer.observe(el));
+
+    // Simpler reveal for non-photo elements
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.transition = 'opacity 1s ease, transform 0.9s ease';
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      revealObserver.observe(el);
+    });
+
+    // Nav background on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.style.background = 'rgba(13,11,9,0.97)';
+      } else {
+        nav.style.background = 'linear-gradient(to bottom, rgba(13,11,9,0.95), transparent)';
+      }
+    });
+  </script>
+
+</body>
+</html>
