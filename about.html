@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me, I Guess — Holden Caulfield</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Special+Elite&family=Caveat:wght@400;600;700&family=Shadows+Into+Light&display=swap" rel="stylesheet" />
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --ink:        #0f0a05;
+      --paper:      #e8d7b0;
+      --paper-2:    #d8c59a;
+      --red:        #b8402a;
+      --red-deep:   #7a2815;
+      --ochre:      #c89a48;
+      --faded:      #8a7658;
+
+      --notebook:       #f6edd2;   /* aged notebook paper */
+      --notebook-edge:  #e6d9b1;   /* slightly darker edge */
+      --rule-blue:      #8faac8;   /* faded notebook line */
+      --margin-red:     #c44836;   /* margin rule red */
+      --pen-blue:       #1f3a72;   /* ballpoint ink */
+      --pencil:         #3c3224;   /* pencil */
+      --typewriter:     #22170d;   /* typewriter ink (slightly imperfect) */
+    }
+
+    html{ scroll-behavior:smooth; }
+    body{
+      background: #12110e;
+      color: var(--paper);
+      font-family: 'Special Elite', monospace;
+      font-size: 17px; line-height: 1.75;
+      min-height: 100vh;
+      overflow-x: hidden;
+      /* desk-like background with subtle texture */
+      background-image:
+        radial-gradient(ellipse at 50% 30%, #1e1a12 0%, #0d0a07 70%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+      background-blend-mode: multiply;
+    }
+
+    /* ambient grain + leak reused */
+    body::before{
+      content:''; position:fixed; inset:-5%; z-index:9000; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity:0.18; mix-blend-mode:overlay;
+      animation: grainShift 0.35s steps(4) infinite;
+    }
+    @keyframes grainShift{
+      0%{transform:translate(0,0)} 25%{transform:translate(-2%,1%)}
+      50%{transform:translate(1%,-1%)} 75%{transform:translate(-1%,2%)}
+      100%{transform:translate(0,0)}
+    }
+
+    /* === masthead reused === */
+    .masthead{
+      position: fixed; top:0; left:0; right:0; z-index:7000;
+      background: var(--ink);
+      border-bottom: 3px double var(--paper-2);
+      padding: 0.7rem 2.5rem;
+      display:flex; justify-content:space-between; align-items:center;
+      font-family:'Bebas Neue',sans-serif;
+      letter-spacing: 0.2em; font-size: 0.78rem; color: var(--paper-2);
+    }
+    .masthead .left,.masthead .right{display:flex; gap:1.5rem; align-items:center}
+    .masthead .brand{ color: var(--red); font-weight:700; letter-spacing: 0.3em; }
+    .masthead a{
+      color: var(--paper-2); text-decoration:none;
+      padding-bottom:2px; border-bottom:1px solid transparent;
+      transition: border-color .3s, color .3s;
+    }
+    .masthead a:hover{ color: var(--ochre); border-bottom-color: var(--ochre); }
+    @media (max-width: 720px){
+      .masthead{ padding: 0.6rem 1rem; font-size: 0.6rem; }
+      .masthead .left,.masthead .right{gap:0.6rem}
+      .masthead .hideSm{display:none}
+    }
+
+    /* =========================================================
+       FORMAL MAGAZINE HEADER (that Holden vandalizes)
+       ========================================================= */
+    .formal-header{
+      padding: 8rem 2rem 2rem;
+      text-align:center;
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .formal-header .kicker{
+      font-family:'Bebas Neue',sans-serif;
+      letter-spacing: 0.45em; font-size: 0.8rem;
+      color: var(--ochre);
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeIn 0.8s 0.3s forwards;
+    }
+
+    .formal-title{
+      font-family:'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      color: var(--cream, #f2e4c2);
+      line-height: 1;
+      position: relative;
+      display: inline-block;
+      opacity: 0; animation: fadeIn 0.7s 0.5s forwards;
+    }
+
+    /* The word "AUTHOR" that Holden scribbles out */
+    .formal-title .word-about,
+    .formal-title .word-the{ color: #f2e4c2; }
+
+    .formal-title .word-author{
+      color: #9a7a4a;
+      position: relative;
+      display: inline-block;
+    }
+
+    /* SVG scribble drawn over "AUTHOR" */
+    .scribble-svg{
+      position: absolute;
+      left: -6%; right: -6%; top: 15%; bottom: 15%;
+      width: 112%; height: 70%;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .scribble-svg path{
+      fill: none;
+      stroke: var(--red);
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 900;
+      stroke-dashoffset: 900;
+      animation: scribble 1.2s 2s cubic-bezier(.65,.05,.36,1) forwards;
+      filter: drop-shadow(0 0 0.5px var(--red));
+    }
+    @keyframes scribble{ to{ stroke-dashoffset: 0; } }
+
+    /* Holden's handwritten correction */
+    .holden-correction{
+      font-family:'Caveat', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--pen-blue);
+      display: block;
+      margin-top: 0.8rem;
+      transform: rotate(-3deg);
+      opacity: 0;
+      animation: handwrite 0.6s 3.3s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    .holden-correction::before{
+      content: '←'; margin-right: 0.4rem; color: var(--red);
+      font-family: serif;
+    }
+
+    @keyframes handwrite{
+      from{ opacity:0; transform: rotate(-3deg) translateY(15px) scale(0.92); }
+      to{   opacity:1; transform: rotate(-3deg) translateY(0) scale(1); }
+    }
+
+    /* formal byline that's also crossed out */
+    .formal-byline{
+      margin-top: 1.4rem;
+      font-family:'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: #9a7a4a;
+      position: relative;
+      display: inline-block;
+      opacity: 0; animation: fadeIn 0.7s 1s forwards;
+    }
+    .formal-byline::after{
+      content:''; position:absolute; left: -5%; right: -5%;
+      top: 50%; height: 2px; background: var(--red);
+      transform: scaleX(0); transform-origin: left;
+      animation: strike 0.4s 4s forwards;
+    }
+    @keyframes strike{ to{ transform: scaleX(1); } }
+
+    .handwritten-note{
+      font-family:'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--pen-blue);
+      margin-top: 0.5rem;
+      transform: rotate(-1.5deg);
+      opacity: 0;
+      animation: handwrite 0.5s 4.4s forwards;
+    }
+
+    @keyframes fadeIn{ to{ opacity:1; } }
+
+    /* =========================================================
+       NOTEBOOK PAPER — the main content surface
+       ========================================================= */
+    .notebook-wrap{
+      max-width: 860px;
+      margin: 2rem auto 0;
+      padding: 0 2rem 6rem;
+      position: relative;
+    }
+
+    .paper{
+      position: relative;
+      background-color: var(--notebook);
+      /* blue ruled lines + red left margin */
+      background-image:
+        linear-gradient(to right, transparent 78px, var(--margin-red) 78px, var(--margin-red) 79px, transparent 79px),
+        repeating-linear-gradient(to bottom,
+          transparent 0, transparent 31px,
+          var(--rule-blue) 31px, var(--rule-blue) 32px);
+      padding: 48px 40px 60px 100px;
+      box-shadow:
+        0 4px 2px rgba(0,0,0,0.2),
+        0 30px 60px rgba(0,0,0,0.55),
+        0 60px 100px rgba(0,0,0,0.3),
+        inset 0 0 30px rgba(120, 90, 40, 0.06);
+      color: var(--typewriter);
+      font-size: 16px;
+      line-height: 32px;           /* aligns with ruled lines */
+      transform: rotate(-0.3deg);
+      opacity: 0;
+      transform-origin: top center;
+      animation: paperDrop 1s 0.1s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    @keyframes paperDrop{
+      from{ opacity:0; transform: rotate(-0.8deg) translateY(-30px); }
+      to{   opacity:1; transform: rotate(-0.3deg) translateY(0); }
+    }
+
+    /* Torn / slightly frayed edges via subtle shadow */
+    .paper::after{
+      content:''; position:absolute; inset:0;
+      pointer-events:none;
+      box-shadow: inset 0 0 0 1px rgba(140, 105, 60, 0.15);
+    }
+
+    /* 3 hole-punch marks on the left */
+    .paper::before{
+      content:''; position:absolute;
+      left: 24px; top: 0; bottom: 0; width: 22px;
+      background-image:
+        radial-gradient(circle at 50% 12%, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.25) 7px, transparent 8px),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.25) 7px, transparent 8px),
+        radial-gradient(circle at 50% 88%, rgba(0,0,0,0.3) 0, rgba(0,0,0,0.25) 7px, transparent 8px);
+      pointer-events:none;
+    }
+
+    /* ======================= TYPOGRAPHY ON PAPER ======================= */
+    .paper h2{
+      font-family: 'Special Elite', monospace;
+      font-weight: normal;
+      font-size: 20px;
+      color: var(--typewriter);
+      line-height: 32px;
+      margin: 48px 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-decoration: underline;
+      text-decoration-color: var(--typewriter);
+      text-underline-offset: 6px;
+    }
+    .paper h2:first-child{ margin-top: 0; }
+
+    .paper p{
+      font-family: 'Special Elite', monospace;
+      margin: 0 0 32px;          /* one blank ruled line between paragraphs */
+      color: var(--typewriter);
+      text-align: left;
+      word-spacing: 0.02em;
+    }
+
+    /* slightly imperfect typewriter ink — random darker chars */
+    .paper .heavy{ color: #0f0600; font-weight: bold; }
+    .paper .faded{ color: #4a3626; opacity: 0.75; }
+
+    /* inline strikethrough like actual pencil/pen cross-outs */
+    .paper .xout{
+      position: relative; color: #5a4a30;
+    }
+    .paper .xout::after{
+      content:''; position:absolute; left:-2px; right:-2px;
+      top: 50%; height: 2px; background: var(--pen-blue);
+      transform: rotate(-1.5deg);
+    }
+
+    /* handwritten insertions (above the line, like a correction) */
+    .paper .hand{
+      font-family: 'Caveat', cursive;
+      color: var(--pen-blue);
+      font-size: 22px;
+      line-height: 1;
+      position: relative;
+      top: -3px;
+      margin: 0 4px;
+      display: inline-block;
+      transform: rotate(-2deg);
+    }
+
+    /* ======================= MARGIN ANNOTATIONS ======================= */
+    .margin-note{
+      position: absolute;
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      color: var(--pen-blue);
+      line-height: 1.3;
+      max-width: 160px;
+      opacity: 0;
+      transform: rotate(-4deg) translateX(-20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .margin-note.visible{
+      opacity: 0.92;
+      transform: rotate(-4deg) translateX(0);
+    }
+    .margin-note.right{
+      right: -150px;
+      transform: rotate(3deg) translateX(20px);
+    }
+    .margin-note.right.visible{
+      transform: rotate(3deg) translateX(0);
+    }
+    .margin-note::before{
+      content: '→ '; color: var(--red);
+    }
+    .margin-note.right::before{
+      content: '← '; color: var(--red);
+    }
+
+    @media (max-width: 1100px){
+      .margin-note{ display: none; }
+    }
+
+    /* ======================= POLAROID ======================= */
+    .polaroid{
+      position: absolute;
+      top: 180px; right: -80px;
+      width: 210px;
+      background: #f4ecd4;
+      padding: 12px 12px 50px;
+      box-shadow:
+        0 2px 0 rgba(0,0,0,0.15),
+        0 18px 30px rgba(0,0,0,0.5),
+        0 40px 60px rgba(0,0,0,0.35);
+      transform: rotate(6deg);
+      z-index: 5;
+      opacity: 0;
+      animation: polaroidIn 0.8s 1.4s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes polaroidIn{
+      from{ opacity:0; transform: rotate(12deg) translateY(-40px) scale(0.85); }
+      to  { opacity:1; transform: rotate(6deg) translateY(0) scale(1); }
+    }
+    .polaroid img{
+      width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block;
+      filter: sepia(0.5) contrast(1.1) brightness(0.85) saturate(0.7);
+    }
+    .polaroid .p-caption{
+      font-family: 'Caveat', cursive;
+      font-size: 24px;
+      text-align: center;
+      margin-top: 12px;
+      color: var(--pen-blue);
+      transform: rotate(-1deg);
+    }
+    .polaroid .tape-a, .polaroid .tape-b{
+      position: absolute;
+      background: rgba(230, 215, 170, 0.5);
+      border: 1px solid rgba(180, 155, 100, 0.3);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      width: 60px; height: 22px;
+    }
+    .polaroid .tape-a{ top: -10px; left: -12px; transform: rotate(-30deg); }
+    .polaroid .tape-b{ top: -10px; right: -10px; transform: rotate(25deg); }
+
+    @media (max-width: 1100px){
+      .polaroid{ right: 10px; top: 100px; width: 160px; }
+    }
+    @media (max-width: 720px){
+      .polaroid{
+        position: relative; right: auto; top: auto;
+        width: 180px; margin: 20px auto 30px;
+      }
+    }
+
+    /* ======================= DRAFT STAMP ======================= */
+    .draft-stamp{
+      position: absolute;
+      bottom: 120px; left: -30px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.25em;
+      color: var(--red);
+      border: 4px double var(--red);
+      padding: 0.6rem 1.2rem;
+      transform: rotate(-15deg);
+      opacity: 0.7;
+      z-index: 4;
+      animation: stampBounce 0.4s 2.2s cubic-bezier(.16,1,.3,1) backwards;
+    }
+    @keyframes stampBounce{
+      0%{ opacity:0; transform: rotate(-15deg) scale(2.5); }
+      80%{ opacity:0.85; transform: rotate(-15deg) scale(0.9); }
+      100%{ opacity:0.7; transform: rotate(-15deg) scale(1); }
+    }
+    @media (max-width: 1100px){ .draft-stamp{ display: none; } }
+
+    /* ======================= COFFEE RING ======================= */
+    .coffee-ring{
+      position: absolute;
+      bottom: 320px; right: 60px;
+      width: 90px; height: 90px;
+      border: 3px solid rgba(100, 60, 30, 0.25);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 1s 1.8s forwards;
+    }
+    .coffee-ring::before{
+      content: ''; position: absolute; inset: 4px;
+      border: 2px solid rgba(100, 60, 30, 0.18);
+      border-radius: 50%;
+    }
+
+    /* ======================= SIGNATURE ======================= */
+    .signature{
+      margin-top: 60px;
+      text-align: right;
+      padding-right: 40px;
+    }
+    .signature .date{
+      font-family: 'Special Elite', monospace;
+      font-size: 14px;
+      color: var(--typewriter);
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+    .signature .sig{
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 3.2rem;
+      color: var(--pen-blue);
+      line-height: 1;
+      display: inline-block;
+      transform: rotate(-6deg);
+    }
+    .signature .under{
+      display:block; height: 2px; width: 140px;
+      background: var(--pen-blue);
+      margin-top: 8px; margin-left: auto;
+      transform: rotate(-4deg);
+      opacity: 0.85;
+    }
+
+    /* ======================= BACK LINK ======================= */
+    .back-link-wrap{
+      max-width: 860px; margin: 4rem auto 5rem;
+      padding: 0 2rem; text-align: center;
+    }
+    .back-link{
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--paper);
+      text-decoration: none;
+      padding: 0.6rem 1.4rem;
+      border-top: 1px solid var(--faded);
+      border-bottom: 1px solid var(--faded);
+      transition: color .3s, border-color .3s;
+    }
+    .back-link:hover{ color: var(--ochre); border-color: var(--ochre); }
+    .back-link::before{ content: '← '; color: var(--red); }
+
+    /* =========================================================
+       REVEAL HELPERS
+       ========================================================= */
+    .reveal{ opacity: 0; transform: translateY(20px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.visible{ opacity: 1; transform: translateY(0); }
+
+    /* typewriter reveal for specific paragraphs */
+    .typewriter-line{
+      overflow: hidden; white-space: pre-wrap;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width: 720px){
+      .paper{
+        padding: 36px 24px 40px 60px;
+        background-image:
+          linear-gradient(to right, transparent 42px, var(--margin-red) 42px, var(--margin-red) 43px, transparent 43px),
+          repeating-linear-gradient(to bottom,
+            transparent 0, transparent 31px,
+            var(--rule-blue) 31px, var(--rule-blue) 32px);
+      }
+      .paper::before{ left: 10px; width: 18px; }
+      .paper h2{ font-size: 17px; }
+      .draft-stamp{ display: none; }
+      .coffee-ring{ display: none; }
+      .signature .sig{ font-size: 2.4rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="left">
+      <span class="brand">THROUGH HOLDEN'S EYES</span>
+      <span class="hideSm">| VOL. I · NO. 1</span>
+    </div>
+    <div class="right">
+      <span class="hideSm">JANUARY 1951</span>
+      <span>| <a href="catcher-portfolio.html">BACK TO THE GALLERY</a></span>
+    </div>
+  </div>
+
+  <!-- FORMAL HEADER (vandalized) -->
+  <header class="formal-header">
+    <p class="kicker">❖ &nbsp; COLOPHON &nbsp; ❖</p>
+    <h1 class="formal-title">
+      <span class="word-about">About </span><span class="word-the">the </span><span class="word-author">Author
+        <!-- scribble SVG overlay -->
+        <svg class="scribble-svg" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M 8,48 C 40,30 80,70 120,40 S 200,72 240,38 S 290,66 298,52
+                   M 8,58 C 50,80 90,30 140,56 S 210,30 260,60 S 295,50 298,56" />
+        </svg>
+      </span>
+    </h1>
+    <span class="holden-correction">me, I guess.</span>
+    <p class="formal-byline">By the Editorial Staff</p>
+    <p class="handwritten-note">No thanks. I'll do it myself. — H.C.</p>
+  </header>
+
+  <!-- NOTEBOOK PAPER -->
+  <div class="notebook-wrap">
+
+    <!-- margin notes placed absolutely against .notebook-wrap -->
+    <div class="margin-note reveal" style="top: 140px; left: -170px;">careful — typewriter jams on the e's</div>
+    <div class="margin-note right reveal" style="top: 880px;">this part is hard to write.</div>
+    <div class="margin-note reveal" style="top: 1580px; left: -170px;">don't read this out loud.</div>
+    <div class="margin-note right reveal" style="top: 2240px;">okay I'm stopping now. really.</div>
+
+    <div class="draft-stamp">DRAFT</div>
+    <div class="coffee-ring"></div>
+
+    <article class="paper">
+
+      <!-- POLAROID pinned to the page -->
+      <div class="polaroid">
+        <div class="tape-a"></div>
+        <div class="tape-b"></div>
+        <img src="https://picsum.photos/seed/holden-self/400/400" alt="" />
+        <p class="p-caption">me. don't look.</p>
+      </div>
+
+      <h2>About Me, I Guess.</h2>
+
+      <p>
+        Look. If you're reading this, you probably want to know all the usual stuff — where I was born,
+        and what my childhood was like, and what my parents did before they had me, and all that
+        biography-book <span class="xout">crap</span><span class="hand">garbage</span>. I'm not going to do that.
+        I'm going to tell you what I want to tell you, and you can take it or leave it. Nobody should have
+        to make an "About Me" page anyway. It's depressing as hell. But the guy running this whole
+        site said I had to. So here we are.
+      </p>
+
+      <h2>The Basics. Not That They Matter.</h2>
+
+      <p>
+        Name's Holden. Holden Caulfield. I'm from New York. I'm sixteen, going on seventeen, though
+        people tell me I act about thirteen sometimes, which kills me but is probably true. I'm tall —
+        six foot two and a half, if it's any of your business. I've got a streak of gray hair on the
+        right side of my head that I've had since I was a little kid. I'm not kidding. <span class="heavy">Millions</span>
+        of gray hairs, right there. My mother used to point them out. That was back when she
+        pointed things out.
+      </p>
+
+      <p>
+        I smoke too much. My lungs aren't great. I'm a lousy athlete. I was the manager of the
+        fencing team at Pencey, which isn't even a real thing to be the manager of, and I lost all
+        the foils on the subway. That's about the only thing I'm famous for, if you want the truth.
+      </p>
+
+      <h2>A Brief, Unhappy History of My Education.</h2>
+
+      <p>
+        Four schools so far. <span class="heavy">Four.</span> Pencey Prep is the latest one to be done with me, but
+        before that there was Elkton Hills, and Whooton, and one other one that isn't worth
+        mentioning. I actually read a lot, in case you were wondering. I finished a whole Thomas
+        Hardy novel on my own, which nobody at Pencey would've believed if I told them. It's not
+        a brains problem. It's a <span class="heavy">phonies</span> problem.
+      </p>
+
+      <p>
+        All four schools were crawling with them — the kind of guys who shake your hand too hard and
+        call everybody "fellas" and act like they know God personally. It makes your skin crawl.
+        It really does. The headmasters, especially. Man, the headmasters. You would not believe
+        the headmasters.
+      </p>
+
+      <h2>My Family. Briefly.</h2>
+
+      <p>
+        My older brother D.B. used to write real stories — one of them called "The Secret Goldfish" that
+        I still think about sometimes — but he moved out to Hollywood and now he's basically a
+        prostitute. Meaning he writes for the movies. Movies are phony, and anyone who takes that
+        kind of money to ruin what they were good at is a prostitute, in my opinion. He bought a
+        Jaguar. I don't feel like talking about D.B.
+      </p>
+
+      <p>
+        My mother is my mother. She's been nervous ever since Allie died. My father is a lawyer.
+        We don't really talk.
+      </p>
+
+      <p>
+        <span class="heavy">Phoebe</span> is ten. She's the smartest person I know, and I'm not exaggerating. She has red hair
+        and she's skinny and she's the only person in my whole family I can actually tell things
+        to. You'd like her. Everybody who meets her likes her. She writes mystery books about a
+        girl detective named Hazle Weatherfield. She never finishes them, but the pages she
+        <em>does</em> finish, you want to keep.
+      </p>
+
+      <h2>Allie.</h2>
+
+      <p>
+        My brother Allie died of leukemia when I was thirteen and he was eleven. That was July,
+        1946. He had red hair. He was the nicest person in my whole family. He was the smartest
+        one too, if you want the truth.
+      </p>
+
+      <p>
+        He was a left-handed pitcher, and he wrote poems all over his baseball glove in green ink
+        — a lot of them — so he'd have something to read when he was out in the field and nobody
+        was at bat. I still have the glove. I'm not going to tell you what I do with it.
+      </p>
+
+      <p>
+        The night he died I broke every window in our garage. Just with my fist. I'm not really
+        sure why, or I do know and I don't feel like getting into it. My hand still doesn't
+        close all the way when it rains.
+      </p>
+
+      <p>
+        I don't want to talk about Allie anymore. I shouldn't have started.
+      </p>
+
+      <h2>The Hat.</h2>
+
+      <p>
+        Bought it in New York the morning after I lost the foils. It's red — very red — with one
+        of those long bills that turns backwards, which is how I wear it. It looks ridiculous.
+        That's the whole point. I wear it when I want to feel like myself, which I'll admit
+        isn't as often as it should be.
+      </p>
+
+      <p>
+        I'm wearing it right now. You can't see me, but I am.
+      </p>
+
+      <h2>What I Want to Be.</h2>
+
+      <p>
+        Everybody asks this. My sister asked me once, right to my face, and she wasn't going to let
+        me get away with any of my usual <span class="xout">baloney</span><span class="hand">lies</span>.
+        So here it is.
+      </p>
+
+      <p>
+        I don't want to be a lawyer. Lawyers are fine if what they do is save innocent people, but
+        even then you'd spend the whole time wondering if you were doing it because you wanted
+        to save lives or because you wanted to be the kind of guy who saves lives. Those are two
+        different things, and one of them is phonier than the other. Probably worse.
+      </p>
+
+      <p>
+        I don't want to be a businessman. I don't want to be a scientist. I don't want to be a
+        writer either — no offense to whoever's reading this.
+      </p>
+
+      <p>
+        What I'd <em>like</em> to be, and this is going to sound stupid, is the only person standing at
+        the edge of a big cliff, where a bunch of little kids are playing in a field of rye, and
+        my whole job is to catch them before they go over. That's it. That's the whole thing. I
+        know how it sounds. I can't help it. It's the only thing I've ever wanted to do that felt
+        like it'd actually be worth doing.
+      </p>
+
+      <h2>Things That Kill Me.</h2>
+
+      <p class="faded">
+        (Meaning I love them. I know it's confusing. It's just how I talk.)
+      </p>
+
+      <p>
+        Phoebe dancing in her pajamas. The ducks at the lagoon, wherever they're getting to. Allie's
+        glove. Museums where nothing has moved in a hundred years. Jane Gallagher keeping her kings
+        in the back row when we played checkers. That little kid walking along the curb on
+        Broadway, singing to himself, while his parents didn't even notice. The carousel, when
+        Phoebe rode it in the rain.
+      </p>
+
+      <h2>Things That Don't.</h2>
+
+      <p>
+        Phonies. Guys who say "grand." Guys who say "old boy." Movies, mostly. People who clap
+        in between pieces at the piano. Guys who take girls out just to say they took them out.
+        Funerals. Christmas, usually. Most of what adults tell you about anything. <span class="heavy">Especially</span>
+        what they tell you about growing up.
+      </p>
+
+      <p>
+        And myself. Most of the time. <span class="heavy">Especially</span> myself, if you want the truth.
+      </p>
+
+      <h2>Alright. That's Enough.</h2>
+
+      <p>
+        I said I wasn't going to tell you a whole bunch of stuff, and I've told you a whole bunch
+        of stuff. I'm lousy at keeping promises. Ask anybody who knows me.
+      </p>
+
+      <p>
+        If you read all this, I don't really know what to say. Thanks, I guess. I'd tell you not
+        to expect too much from me, but you probably already figured that out.
+      </p>
+
+      <p>
+        I do mean the "thanks" though. Don't tell anybody.
+      </p>
+
+      <div class="signature">
+        <p class="date">— December, somewhere in California.</p>
+        <span class="sig">Holden C.</span>
+        <span class="under"></span>
+      </div>
+
+    </article>
+
+  </div>
+
+  <!-- BACK LINK -->
+  <div class="back-link-wrap">
+    <a href="catcher-portfolio.html" class="back-link">back to the gallery, I guess</a>
+  </div>
+
+  <script>
+    // Reveal margin notes and other elements on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Small parallax for the polaroid (subtle)
+    const poly = document.querySelector('.polaroid');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (poly) {
+        poly.style.transform = `rotate(${6 - y * 0.004}deg) translateY(${Math.min(y * 0.04, 20)}px)`;
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
